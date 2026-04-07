@@ -1,0 +1,35 @@
+# .github/workflows/rollback.yml
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_name:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: choice
+        options:
+          - staging
+          - prod
+      previous_version:
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Execute rollback
+        run: |
+          echo "Rolling back ${{ github.event.inputs.app_name }} to ${{ github.event.inputs.previous_version }}"
+          # Revert to previous version
+
+      - name: Verify rollback
+        run: |
+          echo "Verifying rollback..."
